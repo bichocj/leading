@@ -34,7 +34,7 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    function susbscribeApp(page_id, page_access_token) {
+    function subscribeApp(page_id, page_access_token) {
         console.log('Subscribing page to app ' + page_id);
         FB.api(
             '/' + page_id + '/subscried_apps',
@@ -58,8 +58,9 @@
                         var li = document.createElement('li');
                         var a = document.createElement('a');
                         a.href = '#';
-                        a.onclick = susbscribeApp()
-                        li.innerHTML = page.name;
+                        a.onclick = subscribeApp.bind(page.id, page.access_token);
+                        a.innerHTML = page.name;
+                        li.appendChild(a);
                         ul.appendChild(li);
                     }
                 });
