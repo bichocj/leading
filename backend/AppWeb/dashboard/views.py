@@ -13,9 +13,9 @@ def dashboard(request):
 
 
 def webhook(request):
+    print(request.GET)
     challenge = request.GET.get("hub.challenge", "")
     token = request.GET.get("hub.verify_token", "")
     if token == 'abc1234':
         return HttpResponse(challenge)
-
     return HttpResponse('you are an error!')
