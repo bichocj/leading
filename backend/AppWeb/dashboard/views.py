@@ -13,10 +13,10 @@ def dashboard(request):
 
 
 def webhook(request):
-    print(request.POST)
-    challenge = request.POST.get("hub_challenge", "")
+    print(request.GET)
+    challenge = request.GET.get("hub.challenge", "")
     print(challenge)
-    token = request.POST.get("hub_verify_token", "")
+    token = request.GET.get("hub.verify_token", "")
     print(token)
     if token == 'abc1234':
         return HttpResponse(challenge)
