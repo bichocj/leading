@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 
 def home(request):
@@ -11,7 +12,7 @@ def home(request):
 def dashboard(request):
     return render(request, 'dashboard/.html', locals())
 
-
+@csrf_exempt
 def webhook(request):
     print(request.GET)
     print(request.POST)
