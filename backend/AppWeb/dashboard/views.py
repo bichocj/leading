@@ -4,8 +4,6 @@ from django.shortcuts import render
 
 
 def home(request):
-
-
     return render(request, 'dashboard/home.html', locals())
 
 
@@ -15,4 +13,8 @@ def dashboard(request):
 
 
 def webhook(request):
-    return HttpResponse('Halo World!')
+    challenge = request.POST.get("hub_challenge", "")
+    token = request.POST.get("hub_verify_token", "")
+    if token == 'abc1234':
+        return HttpResponse('Halo World! ' + challenge)
+    return HttpResponse('you are an error!')
