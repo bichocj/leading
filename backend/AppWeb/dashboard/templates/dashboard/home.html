@@ -4,7 +4,15 @@
     <title></title>
 </head>
 <body>
-hello panel
+<h1>Panel de Adminitracion</h1>
+
+<button onclick="myFbLogin()">Iniciar sesion con Facebook</button>
+<br>
+<small>Se informa que usted esta dandonos permisos para acceder a las paginas que ud adminsitra</small>
+
+<ul id="list">
+</ul>
+
 <script>
     window.fbAsyncInit = function () {
         FB.init({
@@ -33,10 +41,13 @@ hello panel
                 FB.api('/me', function (response) {
                     console.log('Good to see you, ' + response.name + '.');
                     const pages = response.data;
-                    var ul= document.getElementById("list");
-                    for(var i=0; i < pages.length; i++){
+                    var ul = document.getElementById("list");
+                    for (var i = 0; i < pages.length; i++) {
                         var page = pages[i];
-                        var li= document.createElement('li');
+                        var li = document.createElement('li');
+                        var a = document.createElement('a');
+                        a.href = '#';
+                        a.onclick = susbscribe()
                         li.innerHTML = page.name;
                         ul.appendChild(li);
                     }
@@ -47,10 +58,6 @@ hello panel
         }, {scope: 'manage_pages'});
     }
 </script>
-<button onclick="myFbLogin()">Login with fb</button>
-<ul id="list">
-
-</ul>
 </body>
 </html>
 
