@@ -31,8 +31,15 @@ hello panel
             if (response.authResponse) {
                 console.log('Welcome!  Fetching your information.... ');
                 FB.api('/me', function (response) {
-                    console.log(response);
                     console.log('Good to see you, ' + response.name + '.');
+                    const pages = response.data;
+                    var ul= document.getElementById("list");
+                    for(var i=0; i < pages.length; i++){
+                        var page = pages[i];
+                        var li= document.createElement('li');
+                        li.innerHTML = page.name;
+                        ul.appendChild(li);
+                    }
                 });
             } else {
                 console.log('User cancelled login or did not fully authorize.');
@@ -41,6 +48,9 @@ hello panel
     }
 </script>
 <button onclick="myFbLogin()">Login with fb</button>
+<ul id="list">
+
+</ul>
 </body>
 </html>
 
