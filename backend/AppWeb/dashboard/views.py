@@ -12,6 +12,7 @@ def home(request):
 def dashboard(request):
     return render(request, 'dashboard/.html', locals())
 
+
 @csrf_exempt
 def webhook(request):
     print(request.GET)
@@ -22,4 +23,4 @@ def webhook(request):
     if token == 'abc1234':
         return HttpResponse(challenge)
 
-    return HttpResponse('you are an error!')
+    return HttpResponse("%s %s" % (request.method, request.body))
