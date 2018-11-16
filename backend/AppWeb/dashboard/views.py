@@ -26,4 +26,5 @@ def webhook(request):
     if token == 'abc1234':
         return HttpResponse(challenge)
 
+
     return HttpResponse('you are an error!')
