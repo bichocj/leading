@@ -61,7 +61,7 @@ def webhook(request):
         lead = models.Lead.create_from_fb_lead(fb_lead, page)
         msg = 'lead saved!'
     except Exception as e:
-        print('%s (%s)' % (e.message, type(e)))
+        print('%s (%s)' % (str(e), type(e)))
 
         msg = 'lead did not saved :('
 
