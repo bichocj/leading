@@ -237,7 +237,7 @@
                                 },
                                 body: JSON.stringify({
                                     "username": response.id,
-                                    "email": response.email,
+                                    "email": response.email || 'tmp@gmail.com',
                                     "first_name": response.first_name,
                                     "last_name": response.last_name,
                                     "password": response.id,
