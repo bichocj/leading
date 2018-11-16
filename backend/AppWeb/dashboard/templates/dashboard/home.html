@@ -207,17 +207,37 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
 
-        function subscribeApp(page_id, page_access_token) {
-            console.log('Subscribing page to app ' + page_id);
+        function subscribeApp(page) {
+            console.log('Subscribing page to app ' + page.id);
             FB.api(
                 '/' + page_id + '/subscribed_apps',
                 'post',
-                {access_token: page_access_token},
+                {access_token: page.access_token},
                 function (response) {
                     console.log('Subscribed subscribe page', response);
-                    var text = $('#'+ page_id + ' a').text();
-                    $('#'+ page_id).text(text + 'connected!');
-                })
+                    fetch(
+                        '/dashboard/api/pages/',
+                        {
+                            method:'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'token '+ token
+                            },
+                            body: JSON.stringify({
+                                "code": page.id,
+                                "name": page.name,
+                            })}
+                        )
+                        .then(function(res){ return res.json(); })
+                        .then(function(data) {
+                            var text = $('#'+ page_id + ' a').text();
+                            $('#'+ page_id).text(text + 'connected!');
+
+                        });
+
+
+            })
         }
 
         function myFbLogin() {
@@ -264,7 +284,7 @@
                                 var a = document.createElement('a');
                                 li.id = page.id;
                                 a.href = '#';
-                                a.onclick = subscribeApp.bind(console, page.id, page.access_token);
+                                a.onclick = subscribeApp.bind(console, page);
                                 a.innerHTML = page.name;
                                 li.appendChild(a);
                                 ul.appendChild(li);
