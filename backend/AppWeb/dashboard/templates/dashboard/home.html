@@ -285,8 +285,7 @@
                     })}
             )
                 .then(function(res){ return res.json(); })
-                .then(function(data){
-                    const response = JSON.stringify( data );
+                .then(function(response){
                     if(response.key !== undefined){
                         token = response.key;
                         callback()
