@@ -233,8 +233,8 @@
                         .then(function(res){ return res.json(); })
                         .then(function(data) {
                             console.log(data);
-                            var text = $('#'+ page_id + ' a').text();
-                            $('#'+ page_id).text(text + 'connected!');
+                            var text = $('#'+ page.id + ' a').text();
+                            $('#'+ page.id).text(text + 'connected!');
                         });
             })
         }
