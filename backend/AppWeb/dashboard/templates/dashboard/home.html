@@ -216,7 +216,7 @@
                 function (response) {
                     console.log('Subscribed subscribe page', response);
                     var text = $('#'+ page_id + ' a').text();
-                    $('#'+ page_id).text(text + ' connected');
+                    $('#'+ page_id).text(text + 'connected!');
                 })
         }
 
@@ -229,8 +229,7 @@
                         document.getElementsByTagName('section')[1].classList.add('hidden');
                         document.getElementsByTagName('section')[2].classList.add('hidden');
 
-                        document.getElementsByTagName('section')[3].classList.add('remove');
-
+                        document.getElementsByTagName('section')[3].classList.remove('hidden')
 
                         console.log('Good to see you, ' + response.name + '.');
                         const pages = response.data;
