@@ -46,7 +46,7 @@ def webhook(request):
         # TODO FB recognize LeadGen
         my_app_id = '490907924631684'
         my_app_secret = '4f2cf3ce3047c7c6893bd765915c2178'
-        my_access_token = 'EAAGZBemh3EIQBADfoyZCxAvddp2qJpZBkVUPl608DVF8lLB2d76lxpfs2K7JlSalk3ZAxi0Hq04WuJBRzy1G5UJcZAObO8IAYS121ATtnod9vLvzpI624MzCMBkCbbM2pOk0Xa14ZCjBDS1OZAPiBpx0Mg1gywmvIDn1R1QTHsZBZBBbn5kZApibVwmSCZBGNgZARoYZD'
+        my_access_token = 'EAAGZBemh3EIQBAG3ReLbWCZAGLB7mH5XRfwGXpqZCUU78FLvhRIxJXCSMrZATkGinnJfRwWkZAlZB5bp4OvQyAJ1Ou7ks2udFL7cPNgZAD47VEwm8ARXeZAM1NO8ZC1LaZBtExX76wRZCV2XezXibMvLcyKdtGLbavMJuQZD'
 
         FacebookAdsApi.init(my_app_id, my_app_secret, my_access_token)
 
