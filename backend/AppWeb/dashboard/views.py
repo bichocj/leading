@@ -48,8 +48,6 @@ def webhook(request):
         my_app_secret = settings.FB_APP_SECRET
         my_access_token = settings.FB_APP_ACCESS_TOKEN
 
-        import pdb; pdb.set_trace()
-
         FacebookAdsApi.init(my_app_id, my_app_secret, my_access_token)
         fields = []
         params = {}
