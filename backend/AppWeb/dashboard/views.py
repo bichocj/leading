@@ -46,7 +46,7 @@ def webhook(request):
         # TODO FB recognize LeadGen
         my_app_id = '490907924631684'
         my_app_secret = '4f2cf3ce3047c7c6893bd765915c2178'
-        my_access_token = 'EAAGZBemh3EIQBAFX5tiGrIGUbDZB2WZBaCq4cLXZCdwYPnMrmOYyKHRiKiuZBdilBpJVa9ZBWIpupd01MGXmLRMYfy6MgklBTTbbkfFspqjn8K29DYQzRZCJDuaNcewMAtZACAKfj7hSgm6YN6zo3zlU92Xyx0onrEyvdZCy2yFC1sgX8ZCaAp3yVrCpqXuvnuv8QZD'
+        my_access_token = 'EAAGZBemh3EIQBADfoyZCxAvddp2qJpZBkVUPl608DVF8lLB2d76lxpfs2K7JlSalk3ZAxi0Hq04WuJBRzy1G5UJcZAObO8IAYS121ATtnod9vLvzpI624MzCMBkCbbM2pOk0Xa14ZCjBDS1OZAPiBpx0Mg1gywmvIDn1R1QTHsZBZBBbn5kZApibVwmSCZBGNgZARoYZD'
 
         FacebookAdsApi.init(my_app_id, my_app_secret, my_access_token)
 
@@ -57,14 +57,12 @@ def webhook(request):
         }
 
         page = models.Page.objects.get(page_id=page_id)
-        fb_lead = Lead(leadgen_id).api_get(
-            fields=fields,
-            params=params,
-        )
-
+        fb_lead = Lead(leadgen_id).api_get(fields=fields, params=params, )
         lead = models.Lead.create_from_fb_lead(fb_lead, page)
         msg = 'lead saved!'
-    except:
+    except Exception as e:
+        print('%s (%s)' % (e.message, type(e)))
+
         msg = 'lead did not saved :('
 
     return HttpResponse(msg)

@@ -25,25 +25,30 @@ class Lead(models.Model):
     def __str__(self):
         return self.page.name + "-" + self.first_name
 
-    def create_from_fb_lead(self, fb_lead, page):
+    def create_from_fb_lead(fb_lead, page):
         keyword = ('first_name', 'last_name', 'phone_number', 'email',)
         list_values = fb_lead['field_data']
         data = {}
         extras = {}
         for entry in list_values:
             if entry['name'] in keyword:
-                data[entry['name']] = entry['values']
+                data[entry['name']] = entry['values'][0]
             else:
-                extras[entry['name']] = entry['values']
+                if len(entry['values']) == 1:
+                    extras[entry['name']] = entry['values'][0]
+                else:
+                    extras[entry['name']] = entry['values']
 
-        self.leadgen_id = fb_lead.get('id')
-        self.first_name = data.get('first_name')
-        self.last_name = data.get('last_name')
-        self.phone_number = data.get('phone_number')
-        self.email = data.get('email')
-        self.extras = str(extras)
-        self.page = page
-        self.save()
+        lead = Lead.objects.create(
+            leadgen_id=fb_lead.get('id'),
+            first_name=data.get('first_name'),
+            last_name=data.get('last_name'),
+            phone_number=data.get('phone_number'),
+            email=data.get('email'),
+            extras=str(extras),
+            page=page
+        )
+        return lead
 
 
 class PageTeam(models.Model):
