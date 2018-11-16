@@ -280,8 +280,8 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        "username": fbUser.username,
-                        "password": fbUser.password
+                        "username": fbUser.id,
+                        "password": fbUser.id
                     })}
             )
                 .then(function(res){ return res.json(); })
