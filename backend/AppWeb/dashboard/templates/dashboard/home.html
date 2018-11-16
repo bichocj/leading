@@ -224,10 +224,32 @@
             FB.login(function (response) {
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
-                    FB.api('/me', function (response) {
+                    FB.api('/me?fields=first_name,last_name,email', function (response) {
                         console.log('/me');
-                        console.log(response)
-                        FB.api('/me/accounts', function (response) {
+                        console.log(response);
+                        fetch(
+                            '/accounts/api/registration/',
+                            {
+                                method:'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    "username": response.id,
+                                    "email": response.email,
+                                    "first_name": response.first_name,
+                                    "last_name": response.last_name,
+                                    "password": response.id,
+                                    "profile": {
+                                        "phone": "958888888"
+                                    }
+                                })}
+                        )
+                            .then(function(res){ return res.json(); })
+                            .then(function(data){
+                                console.log( JSON.stringify( data ) )
+                                FB.api('/me/accounts', function (response) {
                             document.getElementsByTagName('section')[0].classList.add('hidden');
                             document.getElementsByTagName('section')[1].classList.add('hidden');
                             document.getElementsByTagName('section')[2].classList.add('hidden');
@@ -248,6 +270,7 @@
                                 ul.appendChild(li);
                             }
                         });
+                            })
                     });
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
