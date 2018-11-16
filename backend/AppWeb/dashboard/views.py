@@ -6,7 +6,7 @@ from . import models
 import json
 from facebookads.adobjects.lead import Lead
 from facebookads.api import FacebookAdsApi
-
+from django.conf import settings
 
 def home(request):
     return render(request, 'dashboard/home.html', locals())
@@ -44,17 +44,15 @@ def webhook(request):
         adgroup_id = entry['adgroup_id']
 
         # TODO FB recognize LeadGen
-        my_app_id = '490907924631684'
-        my_app_secret = '4f2cf3ce3047c7c6893bd765915c2178'
-        my_access_token = 'EAAGZBemh3EIQBAG3ReLbWCZAGLB7mH5XRfwGXpqZCUU78FLvhRIxJXCSMrZATkGinnJfRwWkZAlZB5bp4OvQyAJ1Ou7ks2udFL7cPNgZAD47VEwm8ARXeZAM1NO8ZC1LaZBtExX76wRZCV2XezXibMvLcyKdtGLbavMJuQZD'
+        my_app_id = settings.FB_APP_ID
+        my_app_secret = settings.FB_APP_SECRET
+        my_access_token = settings.FB_APP_ACCESS_TOKEN
+
+        import pdb; pdb.set_trace()
 
         FacebookAdsApi.init(my_app_id, my_app_secret, my_access_token)
-
-        fields = [
-        ]
-
-        params = {
-        }
+        fields = []
+        params = {}
 
         page = models.Page.objects.get(page_id=page_id)
         fb_lead = Lead(leadgen_id).api_get(fields=fields, params=params, )
