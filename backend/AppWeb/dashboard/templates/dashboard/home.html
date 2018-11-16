@@ -215,8 +215,8 @@
                 {access_token: page_access_token},
                 function (response) {
                     console.log('Subscribed subscribe page', response);
-                    var $a = $('#'+ page_id + ' a');
-                    $a.text($a + ' connected');
+                    var text = $('#'+ page_id + ' a').text();
+                    $('#'+ page_id).text(text + ' connected');
                 })
         }
 
