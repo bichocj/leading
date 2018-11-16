@@ -211,7 +211,7 @@
         function subscribeApp(page) {
             console.log('Subscribing page to app ' + page.id);
             FB.api(
-                '/' + page_id + '/subscribed_apps',
+                '/' + page.id + '/subscribed_apps',
                 'post',
                 {access_token: page.access_token},
                 function (response) {

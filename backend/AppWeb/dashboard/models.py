@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Page(models.Model):
-    page_id = models.TextField(max_length=20)
+    page_id = models.TextField(max_length=20, unique=True)
     name = models.TextField(max_length=20)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
