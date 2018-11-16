@@ -21,7 +21,7 @@ class Lead(models.Model):
     phone_number = models.TextField(max_length=20, null=True, blank=True)
     email = models.TextField(max_length=20, null=True, blank=True)
     extras = models.TextField(max_length=255, null=True, blank=True)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True, blank=True)
     state = models.IntegerField(default=0)
     assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 

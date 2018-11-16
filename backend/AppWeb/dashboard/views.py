@@ -8,6 +8,7 @@ from facebookads.adobjects.lead import Lead
 from facebookads.api import FacebookAdsApi
 from django.conf import settings
 
+
 def home(request):
     return render(request, 'dashboard/home.html', locals())
 
@@ -31,6 +32,8 @@ def webhook(request):
     if token == 'abc1234':
         return HttpResponse(challenge)
 
+    leadgen_id = '0007'
+    page = None
     try:
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
@@ -57,6 +60,7 @@ def webhook(request):
         lead = models.Lead.create_from_fb_lead(fb_lead, page)
         msg = 'lead saved!'
     except Exception as e:
+        models.Lead.objects.create(leadgen_id=leadgen_id, page=page)
         print('%s (%s)' % (str(e), type(e)))
 
         msg = 'lead did not saved :('
