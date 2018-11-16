@@ -225,8 +225,11 @@
                 if (response.authResponse) {
                     console.log('Welcome!  Fetching your information.... ');
                     FB.api('/me/accounts', function (response) {
-                        $('section').addClass('hidden');
-                        $('#section-list').removeClass('hidden');
+                        document.getElementsByTagName('section')[0].classList.add('hidden');
+                        document.getElementsByTagName('section')[1].classList.add('hidden');
+                        document.getElementsByTagName('section')[2].classList.add('hidden');
+
+                        document.getElementsByTagName('section')[3].classList.add('remove');
 
 
                         console.log('Good to see you, ' + response.name + '.');
