@@ -7,7 +7,6 @@ from . import models
 
 
 class ChangePasswordSerializer(serializers.Serializer):
-
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
     new_password2 = serializers.CharField(required=True)
@@ -26,25 +25,22 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-
     class Meta:
-            model = models.Profile
-            fields = ('phone', )
+        model = models.Profile
+        fields = ('phone',)
 
 
-class UserSerializer(serializers.ModelSerializer):    
-    profile = ProfileSerializer()     
+class UserSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer()
     token = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        #fields = ('id', 'username', 'email', 'first_name', 'last_name', 'password', 'phone', 'profile',)
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'password', 'profile', 'token')
         read_only_fields = ('token',)
         extra_kwargs = {
             'password': {'write_only': True},
         }
-
 
     def get_token(self, obj):
         token = Token.objects.create(user=obj)
@@ -58,7 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
         # Validate email is not already in use.
         username = validated_data['username']
         try:
-            user = User.objects.get(username=username)                                
+            user = User.objects.get(username=username)
         except User.DoesNotExist:
             profile = validated_data.pop('profile')
             user = User.objects.create(**validated_data)
@@ -66,6 +62,6 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
 
             user.profile.__dict__.update(profile)
-            user.profile.save()        
+            user.profile.save()
 
         return user

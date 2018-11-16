@@ -187,6 +187,7 @@
 
 
     <script>
+        var token = 'nullin';
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '428687180996519',
@@ -225,7 +226,7 @@
                                 'Authorization': 'token '+ token
                             },
                             body: JSON.stringify({
-                                "code": page.id,
+                                "page_id": page.id,
                                 "name": page.name,
                             })}
                         )
@@ -240,6 +241,84 @@
             })
         }
 
+        function doRegistration(fbUser, callback){
+            fetch(
+                '/accounts/api/registration/',
+                {
+                    method:'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "username": fbUser.id,
+                        "email": fbUser.email || 'tmp@gmail.com',
+                        "first_name": fbUser.first_name,
+                        "last_name": fbUser.last_name,
+                        "password": fbUser.id,
+                        "profile": {
+                            "phone": "958888888"
+                        }
+                    })}
+            )
+                .then(function(res){ return res.json(); })
+                .then(function(data){
+                    console.log( JSON.stringify( data ) )
+                    token = data.token
+                    // fetch pages
+                    callback()
+            })
+        }
+        function doLoginOrRegister(fbUser, callback){
+            console.log('Good to see you, ' + fbUser.name + '.');
+            fetch(
+                '/accounts/api/login/',
+                {
+                    method:'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "username": fbUser.username,
+                        "password": fbUser.password
+                    })}
+            )
+                .then(function(res){ return res.json(); })
+                .then(function(data){
+                    const response = JSON.stringify( data );
+                    if(response.key !== undefined){
+                        token = response.key;
+                        callback()
+                    }else{
+                        doRegistration(fbUser, callback);
+                    }
+                    // fetch pages
+            })
+        }
+        function fetchPages(){
+            FB.api('/me/accounts', function (response) {
+                document.getElementsByTagName('section')[0].classList.add('hidden');
+                document.getElementsByTagName('section')[1].classList.add('hidden');
+                document.getElementsByTagName('section')[2].classList.add('hidden');
+                document.getElementsByTagName('section')[3].classList.remove('hidden')
+                const pages = response.data;
+                var ul = document.getElementById("list");
+                for (var i = 0; i < pages.length; i++) {
+                    var page = pages[i];
+                    var li = document.createElement('li');
+                    var a = document.createElement('a');
+                    li.id = page.id;
+                    a.href = '#';
+                    a.onclick = subscribeApp.bind(console, page);
+                    a.innerHTML = page.name;
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                }
+            });
+        }
+
+
         function myFbLogin() {
             FB.login(function (response) {
                 if (response.authResponse) {
@@ -247,50 +326,8 @@
                     FB.api('/me?fields=first_name,last_name,email', function (response) {
                         console.log('/me');
                         console.log(response);
-                        fetch(
-                            '/accounts/api/registration/',
-                            {
-                                method:'POST',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    "username": response.id,
-                                    "email": response.email || 'tmp@gmail.com',
-                                    "first_name": response.first_name,
-                                    "last_name": response.last_name,
-                                    "password": response.id,
-                                    "profile": {
-                                        "phone": "958888888"
-                                    }
-                                })}
-                        )
-                            .then(function(res){ return res.json(); })
-                            .then(function(data){
-                                console.log( JSON.stringify( data ) )
-                                FB.api('/me/accounts', function (response) {
-                            document.getElementsByTagName('section')[0].classList.add('hidden');
-                            document.getElementsByTagName('section')[1].classList.add('hidden');
-                            document.getElementsByTagName('section')[2].classList.add('hidden');
-                            document.getElementsByTagName('section')[3].classList.remove('hidden')
-
-                            console.log('Good to see you, ' + response.name + '.');
-                            const pages = response.data;
-                            var ul = document.getElementById("list");
-                            for (var i = 0; i < pages.length; i++) {
-                                var page = pages[i];
-                                var li = document.createElement('li');
-                                var a = document.createElement('a');
-                                li.id = page.id;
-                                a.href = '#';
-                                a.onclick = subscribeApp.bind(console, page);
-                                a.innerHTML = page.name;
-                                li.appendChild(a);
-                                ul.appendChild(li);
-                            }
-                        });
-                            })
+                        // fetch user or registration
+                        doLoginOrRegister(response, fetchPages)
                     });
                 } else {
                     console.log('User cancelled login or did not fully authorize.');

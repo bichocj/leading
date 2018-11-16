@@ -164,3 +164,7 @@ FIXTURES_PATH = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), '../dem
 MEDIA_URL = '/media/'
 
 CONTACT_EMAIL = 'atixbot@gmail.com'
+
+
+FB_APP_ID = os.environ.get('FB_APP_ID')
+FB_APP_SECRET = os.environ.get('FB_APP_SECRET')
